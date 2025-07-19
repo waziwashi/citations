@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Citation</title>
+    <link rel="stylesheet" href="citation.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@100..900&display=swap" rel="stylesheet">
+    <script defer>
+        function sauvegarder(citations) {
+            localStorage.setItem("citations", JSON.stringify(citations));
+        }
+
+        function charger() {
+            return JSON.parse(localStorage.getItem("citations") || "[]");
+        }
+
+        function creerPost(data, index) {
+            const post = document.createElement("div");
+            post.className = "Post";
+
+            const biblio = document.createElement("div");
+            biblio.className = "biblio";
+
+            const ouvrage = document.createElement("span");
+            ouvrage.className = "ouvrage";
+            ouvrage.textContent = data.ouvrage;
+
+            const auteurice = document.createElement("span");
+            auteurice.className = "auteurice";
+            auteurice.textContent = data.auteurice;
+
+            biblio.appendChild(ouvrage);
+            biblio.appendChild(auteurice);
+
+            const texte = document.createElement("p");
+            texte.className = "texte";
+            texte.textContent = data.texte;
+
+            const tags = document.createElement("div");
+            tags.className = "tags";
+
+            const citations = charger();
+            const citation = citations[index];
+
+            (citation.tags || []).forEach((tagText, tagIndex) => {
+                const tag = document.createElement("span");
+                tag.className = "tag";
+                tag.textContent = tagText;
+
+                tag.onclick = () => {
+                    citation.tags.splice(tagIndex, 1);
+                    sauvegarder(citations);
+                    afficherCitations();
+                };
+
+                tags.appendChild(tag);
+            });
+
+            const Postmenu = document.createElement("div");
+            Postmenu.className = "Postmenu";
+
+            const editBtn = document.createElement("button");
+            editBtn.setAttribute("id", "editBtn");
+            editBtn.textContent = "✏️";
+            editBtn.onclick = () => {
+                const citations = charger();
+                const citation = citations[index];
+
+                const ouvrageInput = document.createElement("input");
+                ouvrageInput.setAttribute("id", "editBiblio");
+                ouvrageInput.value = citation.ouvrage;
+
+                const auteuriceInput = document.createElement("input");
+                auteuriceInput.setAttribute("id", "editBiblio");
+                auteuriceInput.value = citation.auteurice;
+
+                const texteArea = document.createElement("textarea");
+                texteArea.value = citation.texte;
+                texteArea.style.width = "100%";
+                texteArea.style.padding = "0.5rem 1rem";
+                texteArea.style.boxSizing = "border-box";
+                texteArea.style.overflowX = "hidden";
+                texteArea.style.resize = "none";
+                texteArea.style.outline = "none";
+                texteArea.style.textAlign = "justify";
+                texteArea.rows = 5;
+
+                post.innerHTML = "";
+                const topInputs = document.createElement("div");
+                topInputs.className = "ajouter";
+                topInputs.appendChild(ouvrageInput);
+                topInputs.appendChild(auteuriceInput);
+                post.appendChild(topInputs);
+                post.appendChild(texteArea);
+
+                const validerBtn = document.createElement("button");
+                validerBtn.setAttribute("id", "validation");
+                validerBtn.textContent = "✅";
+                validerBtn.onclick = () => {
+                    citation.ouvrage = ouvrageInput.value.trim();
+                    citation.auteurice = auteuriceInput.value.trim();
+                    citation.texte = texteArea.value.trim();
+                    citation.tags = tagInput.value
+                        .split(",")
+                        .map(t => t.trim())
+                        .filter(t => t.length > 0);
+
+                    citations[index] = citation;
+                    sauvegarder(citations);
+                    afficherCitations();
+                };
+
+                const annulerBtn = document.createElement("button");
+                annulerBtn.setAttribute("id", "validation");
+                annulerBtn.textContent = "❌";
+                annulerBtn.onclick = () => {
+                    afficherCitations();
+                };
+
+                const boutonContainer = document.createElement("div");
+                boutonContainer.appendChild(validerBtn);
+                boutonContainer.appendChild(annulerBtn);
+                post.appendChild(boutonContainer);
+
+                texteArea.focus();
+                    function ajusterHauteurTextarea(textarea) {
+                        textarea.style.height = "auto";
+                        textarea.style.height = textarea.scrollHeight + "px";
+                    }
+                    ajusterHauteurTextarea(texteArea);
+
+                texteArea.addEventListener("input", () => ajusterHauteurTextarea(texteArea));
+            };
+
+            const addTagBtn = document.createElement("button");
+            addTagBtn.setAttribute("id", "TagBtn");
+            addTagBtn.textContent = "🔖";
+            addTagBtn.onclick = () => {
+                const newTag = prompt("Ajouter un tag :")?.trim();
+                if (newTag) {
+                    const citations = charger();
+                    const citation = citations[index];
+
+                    citation.tags = citation.tags || [];
+                    if (!citation.tags.includes(newTag)) {
+                        citation.tags.push(newTag);
+                        sauvegarder(citations);
+                        afficherCitations();
+                    }
+                }
+            };
+
+            const deleteBtn = document.createElement("button");
+            deleteBtn.setAttribute("id", "deleteBtn");
+            deleteBtn.textContent = "🗑️";
+            deleteBtn.onclick = () => {
+                const citations = charger();
+                citations.splice(index, 1);
+                sauvegarder(citations);
+                afficherCitations();
+            };
+
+            Postmenu.appendChild(editBtn);
+            Postmenu.appendChild(addTagBtn);
+            Postmenu.appendChild(deleteBtn);
+
+            post.appendChild(Postmenu);
+            post.appendChild(biblio);
+            post.appendChild(texte);
+            post.appendChild(tags);
+
+            return post;
+        }
+
+        function afficherCitations() {
+            const container = document.getElementById("post-container");
+            container.innerHTML = "";
+
+            const filtre = document.querySelector(".recherche").value.toLowerCase().trim();
+            let citations = charger();
+
+            citations.forEach(c => {
+                const texteComplet = [
+                    c.ouvrage,
+                    c.auteurice,
+                    c.texte,
+                    ...(c.tags || [])
+                ].join(" ").toLowerCase();
+
+                if (texteComplet.includes(filtre) || !filtre) {
+                    const all = charger();
+                    const index = all.findIndex(x => x.id === c.id);
+                    if (index !== -1) {
+                        container.appendChild(creerPost(c, index));
+                    }
+                }
+            });
+
+            if (container.children.length === 0) {
+                const vide = document.createElement("p");
+                vide.setAttribute("id", "vide");
+                vide.textContent = "Bibliothèque de Citations épuisée :/";
+                container.appendChild(vide);
+            }
+        }
+
+        function ajouterCitation() {
+            const ouvrage = document.querySelector('.livre').value;
+            const auteurice = document.querySelector('.auteurice').value;
+            const texte = document.querySelector('.citation').value;
+
+            const nouvelleCitation = {
+                id: crypto.randomUUID(),
+                ouvrage,
+                auteurice,
+                texte,
+                tags: []
+            };
+            const citations = charger();
+            citations.push(nouvelleCitation);
+            sauvegarder(citations);
+            afficherCitations();
+
+            document.querySelector('.livre').value = '';
+            document.querySelector('.auteurice').value = '';
+            document.querySelector('.citation').value = '';
+            document.querySelector('.tag').value = '';
+        }
+        document.querySelector('.recherche').value = '';
+
+        function exporterJSON() {
+            const data = JSON.stringify(charger(), null, 2);
+            const blob = new Blob([data], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "citations.json";
+            a.click();
+
+            URL.revokeObjectURL(url);
+        }
+
+        window.onload = afficherCitations;
+    </script>
+</head>
+<body>
+    <div class="centre">
+        <div class="menu">
+            <input type="text" class="recherche" placeholder="Trouver une Citation" oninput="afficherCitations();"
+            ><button onclick="ajouterCitation()">📬</button><button onclick="exporterJSON()">📦</button>
+        </div>
+        <div class="Ajouter">
+            <input type="text" class="livre" placeholder="Ouvrage"
+            ><input type="text" class="auteurice" placeholder="Auteur.ice">
+            <textarea class="citation" rows="5" spellcheck="false" placeholder="Citation"></textarea>
+        </div>
+        <div id="post-container"></div>
+    </div>
+</body>
+</html>

@@ -9,4 +9,4 @@ puis 📬 pour en faire un post :
 
 #### Ensuite, plus qu'à rechercher parmi votre bibliothèque de citations !
 
-📦 Pour exporter en json (import à venir)
+📁 Pour 📤 exporter en json ou pour 📥 importer un json déjà existant

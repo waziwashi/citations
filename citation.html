@@ -7,6 +7,25 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="centre">
+        <div class="menu">
+            <input type="text" class="recherche" oninput="afficherCitations();"
+            ><button onclick="ajouterCitation()">📬</button><button id="exporterJSON">📁</button>
+        </div>
+        <div class="Ajouter">
+            <input type="text" class="livre" placeholder="Ouvrage"
+            ><input type="text" class="auteurice" placeholder="Auteur.ice">
+            <textarea class="citation" rows="5" spellcheck="false" placeholder="Citation"></textarea>
+        </div>
+        <div id="post-container"></div>
+    </div>
+    <div id="jsonMenu" style="display: none; position: absolute; z-index: 1000; background: white; padding: 0.5rem; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
+        <button class="importExport" id="importerJson">📥 Importer</button><br>
+        <button class="importExport" id="exporterJsonAction">📤 Exporter</button>
+    </div>
+    <input type="file" id="fichierJson" accept=".json" style="display: none;">
     <script defer>
         function sauvegarder(citations) {
             localStorage.setItem("citations", JSON.stringify(citations));
@@ -14,6 +33,13 @@
 
         function charger() {
             return JSON.parse(localStorage.getItem("citations") || "[]");
+        }
+
+        function mettreAJourCompteur() {
+            const citations = charger();
+            const n = citations.length;
+            const recherche = document.querySelector(".recherche");
+            recherche.placeholder = `Rechercher parmi ${n} citation${n !== 1 ? "s" : ""}`;
         }
 
         function creerPost(data, index) {
@@ -65,74 +91,73 @@
             editBtn.setAttribute("id", "editBtn");
             editBtn.textContent = "✏️";
             editBtn.onclick = () => {
-                const citations = charger();
-                const citation = citations[index];
+            const allCitations = charger();
+            const citation = allCitations[index];
 
-                const ouvrageInput = document.createElement("input");
-                ouvrageInput.setAttribute("id", "editBiblio");
-                ouvrageInput.value = citation.ouvrage;
+            const ouvrageInput = document.createElement("input");
+            ouvrageInput.setAttribute("id", "editBiblio");
+            ouvrageInput.value = citation.ouvrage;
 
-                const auteuriceInput = document.createElement("input");
-                auteuriceInput.setAttribute("id", "editBiblio");
-                auteuriceInput.value = citation.auteurice;
+            const auteuriceInput = document.createElement("input");
+            auteuriceInput.setAttribute("id", "editBiblio");
+            auteuriceInput.value = citation.auteurice;
 
-                const texteArea = document.createElement("textarea");
-                texteArea.value = citation.texte;
-                texteArea.style.width = "100%";
-                texteArea.style.padding = "0.5rem 1rem";
-                texteArea.style.boxSizing = "border-box";
-                texteArea.style.overflowX = "hidden";
-                texteArea.style.resize = "none";
-                texteArea.style.outline = "none";
-                texteArea.style.textAlign = "justify";
-                texteArea.rows = 5;
+            const texteArea = document.createElement("textarea");
+            texteArea.value = citation.texte;
+            texteArea.setAttribute("id", "texteArea");
+            texteArea.spellcheck = false;
 
-                post.innerHTML = "";
-                const topInputs = document.createElement("div");
-                topInputs.className = "ajouter";
-                topInputs.appendChild(ouvrageInput);
-                topInputs.appendChild(auteuriceInput);
-                post.appendChild(topInputs);
-                post.appendChild(texteArea);
+            function ajusterHauteurTextarea(textarea) {
+                textarea.style.height = "auto";
+                requestAnimationFrame(() => {
+                    textarea.style.height = textarea.scrollHeight + "px";
+                });
+            }
+            ajusterHauteurTextarea(texteArea);
+            texteArea.addEventListener("input", () => ajusterHauteurTextarea(texteArea));
 
-                const validerBtn = document.createElement("button");
-                validerBtn.setAttribute("id", "validation");
-                validerBtn.textContent = "✅";
-                validerBtn.onclick = () => {
-                    citation.ouvrage = ouvrageInput.value.trim();
-                    citation.auteurice = auteuriceInput.value.trim();
-                    citation.texte = texteArea.value.trim();
-                    citation.tags = tagInput.value
-                        .split(",")
-                        .map(t => t.trim())
-                        .filter(t => t.length > 0);
+            const topInputs = document.createElement("div");
+            topInputs.className = "ajouter";
+            topInputs.appendChild(ouvrageInput);
+            topInputs.appendChild(auteuriceInput);
 
-                    citations[index] = citation;
-                    sauvegarder(citations);
-                    afficherCitations();
+            post.innerHTML = "";
+            post.appendChild(topInputs);
+            post.appendChild(texteArea);
+
+            const validerBtn = document.createElement("button");
+            validerBtn.setAttribute("id", "validation");
+            validerBtn.textContent = "✅";
+            validerBtn.onclick = () => {
+                const updated = {
+                    ...citation,
+                    ouvrage: ouvrageInput.value.trim(),
+                    auteurice: auteuriceInput.value.trim(),
+                    texte: texteArea.value.trim()
                 };
 
-                const annulerBtn = document.createElement("button");
-                annulerBtn.setAttribute("id", "validation");
-                annulerBtn.textContent = "❌";
-                annulerBtn.onclick = () => {
+                const all = charger();
+                const realIndex = all.findIndex(c => c.id === citation.id);
+                if (realIndex !== -1) {
+                    all[realIndex] = updated;
+                    sauvegarder(all);
                     afficherCitations();
-                };
-
-                const boutonContainer = document.createElement("div");
-                boutonContainer.appendChild(validerBtn);
-                boutonContainer.appendChild(annulerBtn);
-                post.appendChild(boutonContainer);
-
-                texteArea.focus();
-                    function ajusterHauteurTextarea(textarea) {
-                        textarea.style.height = "auto";
-                        textarea.style.height = textarea.scrollHeight + "px";
-                    }
-                    ajusterHauteurTextarea(texteArea);
-
-                texteArea.addEventListener("input", () => ajusterHauteurTextarea(texteArea));
+                }
             };
+
+            const annulerBtn = document.createElement("button");
+            annulerBtn.setAttribute("id", "validation");
+            annulerBtn.textContent = "❌";
+            annulerBtn.onclick = () => {
+                afficherCitations();
+            };
+
+            const boutonContainer = document.createElement("div");
+            boutonContainer.style.marginTop = "0.5rem";
+            boutonContainer.appendChild(validerBtn);
+            boutonContainer.appendChild(annulerBtn);
+            post.appendChild(boutonContainer);
+        };
 
             const addTagBtn = document.createElement("button");
             addTagBtn.setAttribute("id", "TagBtn");
@@ -196,6 +221,7 @@
                         container.appendChild(creerPost(c, index));
                     }
                 }
+                mettreAJourCompteur();
             });
 
             if (container.children.length === 0) {
@@ -222,42 +248,73 @@
             citations.push(nouvelleCitation);
             sauvegarder(citations);
             afficherCitations();
+            mettreAJourCompteur();
 
             document.querySelector('.livre').value = '';
             document.querySelector('.auteurice').value = '';
             document.querySelector('.citation').value = '';
-            document.querySelector('.tag').value = '';
         }
         document.querySelector('.recherche').value = '';
 
-        function exporterJSON() {
-            const data = JSON.stringify(charger(), null, 2);
+        const boutonJSON = document.getElementById("exporterJSON");
+        const menuJSON = document.getElementById("jsonMenu");
+        const importerBtn = document.getElementById("importerJson");
+        const exporterBtn = document.getElementById("exporterJsonAction");
+        const inputFichier = document.getElementById("fichierJson");
+
+        boutonJSON.addEventListener("click", (e) => {
+            const rect = boutonJSON.getBoundingClientRect();
+            menuJSON.style.display = menuJSON.style.display === "block" ? "none" : "block";
+            menuJSON.style.top = `${rect.bottom + window.scrollY}px`;
+            menuJSON.style.left = `${rect.left + window.scrollX}px`;
+        });
+
+        exporterBtn.addEventListener("click", () => {
+            const data = localStorage.getItem("citations");
             const blob = new Blob([data], { type: "application/json" });
             const url = URL.createObjectURL(blob);
-
             const a = document.createElement("a");
             a.href = url;
             a.download = "citations.json";
             a.click();
-
             URL.revokeObjectURL(url);
-        }
+            menuJSON.style.display = "none";
+        });
+
+        importerBtn.addEventListener("click", () => {
+            inputFichier.click();
+            menuJSON.style.display = "none";
+        });
+
+        inputFichier.addEventListener("change", (e) => {
+            const fichier = e.target.files[0];
+            if (!fichier) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const contenu = JSON.parse(e.target.result);
+                    if (!Array.isArray(contenu)) throw new Error("Le JSON doit être une liste de citations");
+
+                    const confirmer = confirm("Écraser toutes les citations actuelles par ce fichier ?");
+                    if (confirmer) {
+                        localStorage.setItem("citations", JSON.stringify(contenu));
+                        afficherCitations();
+                        mettreAJourCompteur();
+                    }
+                } catch (err) {
+                    alert("Erreur : le fichier JSON est invalide");
+                }
+            };
+            reader.readAsText(fichier);
+        });
+
+        document.addEventListener("click", (e) => {
+            if (!menuJSON.contains(e.target) && e.target !== boutonJSON) {
+                menuJSON.style.display = "none";
+            }
+        });
 
         window.onload = afficherCitations;
     </script>
-</head>
-<body>
-    <div class="centre">
-        <div class="menu">
-            <input type="text" class="recherche" placeholder="Trouver une Citation" oninput="afficherCitations();"
-            ><button onclick="ajouterCitation()">📬</button><button onclick="exporterJSON()">📦</button>
-        </div>
-        <div class="Ajouter">
-            <input type="text" class="livre" placeholder="Ouvrage"
-            ><input type="text" class="auteurice" placeholder="Auteur.ice">
-            <textarea class="citation" rows="5" spellcheck="false" placeholder="Citation"></textarea>
-        </div>
-        <div id="post-container"></div>
-    </div>
 </body>
 </html>

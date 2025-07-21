@@ -1,7 +1,7 @@
 ### Un site pour consigner toutes vos citations de lectures
 
-#### Écrivez une citation avec titre de l'oeuvre et auteurice,
-puis 📬 pour en faire un post :
+#### Écrivez une citation avec le nom de l'oeuvre et de l'auteur.ice,
+puis ✍️ pour en faire un post :
 
 ✏️ pour l'éditer (titre, auteur.ice, texte de la citation) <br>
 🔖 pour y ajouter des tags <br>

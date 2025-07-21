@@ -165,17 +165,14 @@ span.tag:hover::before {
     padding: 0.2em 0.3em;
     background-color: var(--b);
 }
-#editBtn:hover {
+.Postmenu button:hover {
     background-color: var(--h);
-}
-#TagBtn:hover {
-    background-color: var(--h);
+    transition: 0.3s;
+    transform: translateY(-10%);
+    box-shadow: 0 0 5px black;
 }
 #deleteBtn {
     border-radius: 0 10px 10px 0;
-}
-#deleteBtn:hover {
-    background-color: var(--h);
 }
 #vide {
     text-align: center;

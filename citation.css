@@ -13,29 +13,35 @@ body {
     padding-bottom: 1vh;
 }
 .menu {
-    position: relative;
-    padding: 2vh 5vw;
+    display: flex;
+    align-items: center;
+    padding-top: 3vh;
+    margin: 0 3vw;
 }
 .recherche {
     border: none;
     outline: none;
-    width: 63vw;
-    margin: 0;
-    padding: 2vw;
-    font-size: 2vw;
-}
-#suggestions div:hover {
-    background-color: #eee;
+    height: 2.4rem;
+    font-size: 1rem;
+    line-height: 1.2;
+    padding: 0.4rem 0.75rem;
+    flex: 1;
 }
 .menu button {
+    font-size: 1.8rem;
+    width: 3.2rem;
+    height: 3.2rem;
     border: none;
+    line-height: 1;
     cursor: pointer;
-    margin: 0;
-    padding: 2vw;
-    font-size: 2vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
 }
 .menu button:hover {
     background-color: var(--h);
+    box-shadow: 0 0 5px black;
     transform: scale(120%);
     transition: 0.3s;
 }
@@ -57,12 +63,14 @@ body {
     text-align: justify;
     outline: none;
     border: none;
-    font-family: Garamond;
     margin: 0;
     padding: 0.5em 1em;
     white-space: pre-wrap;
     box-sizing: border-box;
     overflow-wrap: break-word;
+    font-family: Garamond;
+    font-style: italic;
+    line-height: 1.6;
 }
 .Post {
     background-color: white;
@@ -110,18 +118,20 @@ body {
     display: inline-block;
     margin: 0 5vw 1vh 5vw;
     width: 65vw;
+    font-weight: 600;
+    letter-spacing: 0.05em;
 }
 span.ouvrage {
     float: left;
-    font-weight: 900;
 }
 span.auteurice {
     float: right;
-    font-weight: 900;
 }
 .texte {
     text-align: justify;
     margin: 0 5vw;
+    font-style: italic;
+    line-height: 1.6;
 }
 .tags {
     margin: 0 5vw;
@@ -182,6 +192,8 @@ span.tag:hover::before {
     outline: none;
     font-family: Garamond;
     font-size: 2vw;
+    font-weight: 600;
+    letter-spacing: 0.05em;
 }
 #texteArea {
     width: 100%;
@@ -196,16 +208,18 @@ span.tag:hover::before {
     min-height: 4rem;
     box-sizing: border-box;
     white-space: pre-wrap;
+    font-style: italic;
+    line-height: 1.6;
     transition: height 0.15s ease-in-out;
 }
 #validation {
+    background-color: var(--b);
     border: none;
     cursor: pointer;
-    width: 5vw;
-    height: 5vw;
     margin: 1vh 16.25vw 0 16.25vw;
     border-radius: 10px;
-    background-color: var(--b);
+    font-size: 2vw;
+    padding: 1vw;
 }
 #validation:hover {
     background-color: var(--h);

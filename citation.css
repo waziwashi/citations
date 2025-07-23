@@ -52,7 +52,6 @@ body {
 }
 .Ajouter {
     margin: 0 7.5vw 2vh 7.5vw;
-    font-size: 3vw;
 }
 .Ajouter:hover {
     box-shadow: 0 0 10px black;
@@ -66,8 +65,8 @@ body {
     width: 37.5vw;
     padding: 0;
     font-family: inherit;
-    font-size: 1em;
     font-weight: 600;
+    font-size: 2vw;
     letter-spacing: 0.05em;
 }
 .citation {
@@ -106,7 +105,7 @@ body {
 .Post::after {
     content: '"';
     position: absolute;
-    font-size: 3rem;
+    font-size: 7vw;
     color: var(--b);
     pointer-events: none;
     font-family: "Catamaran", sans-serif;

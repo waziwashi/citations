@@ -15,13 +15,13 @@
             ><button onclick="ajouterCitation()">✍️</button><button id="exporterJSON">📁</button>
         </div>
         <div class="Ajouter">
-            <input type="text" class="livre" placeholder="Ouvrage"
+            <input type="text" class="livre" placeholder="Titre"
             ><input type="text" class="auteurice" placeholder="Auteur.ice">
-            <textarea class="citation" rows="5" spellcheck="false" placeholder="Citation"></textarea>
+            <textarea class="citation" spellcheck="false" placeholder="Citation"></textarea>
         </div>
         <div id="post-container"></div>
     </div>
-    <div id="jsonMenu" style="display: none; position: absolute; z-index: 1000; background: white; padding: 0.5rem; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
+    <div id="jsonMenu" style="display: none; position: absolute; background: white; z-index: 1000; padding: 0.5rem; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
         <button class="importExport" id="exporterJsonAction">📤 Exporter</button><br>
         <button class="importExport" id="importerJson">📥 Importer</button> 
     </div>
@@ -186,6 +186,17 @@
                 sauvegarder(citations);
                 afficherCitations();
             };
+            
+            const textareaCitation = document.querySelector(".citation");
+
+            function ajusterHauteurTextareaAjout() {
+                textareaCitation.style.height = "auto";
+                textareaCitation.style.height = textareaCitation.scrollHeight + "px";
+            }
+
+            textareaCitation.addEventListener("input", ajusterHauteurTextareaAjout);
+
+            window.addEventListener("load", ajusterHauteurTextareaAjout);
 
             Postmenu.appendChild(editBtn);
             Postmenu.appendChild(addTagBtn);
@@ -302,7 +313,7 @@
                         mettreAJourCompteur();
                     }
                 } catch (err) {
-                    alert("Erreur : le fichier JSON est invalide");
+                    alert("Erreur : fichier JSON invalide");
                 }
             };
             reader.readAsText(fichier);

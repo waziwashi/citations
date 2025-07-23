@@ -16,7 +16,7 @@ body {
     display: flex;
     align-items: center;
     padding-top: 3vh;
-    margin: 0 3vw;
+    margin: 0 3vw 3vh 3vw;
 }
 .recherche {
     border: none;
@@ -24,8 +24,12 @@ body {
     height: 2.4rem;
     font-size: 1rem;
     line-height: 1.2;
-    padding: 0.4rem 0.75rem;
+    padding: 0.4rem 2rem;
     flex: 1;
+}
+.recherche:hover {
+    box-shadow: 0 0 10px black;
+    transition: 0.3s;
 }
 .menu button {
     font-size: 1.8rem;
@@ -46,7 +50,12 @@ body {
     transition: 0.3s;
 }
 .Ajouter {
-    margin: 0 7.5vw;
+    margin: 0 7.5vw 2vh 7.5vw;
+}
+.Ajouter:hover {
+    box-shadow: 0 0 10px black;
+    transition: 0.3s;
+    transform: scale(105%);
 }
 .Ajouter input {
     border: none;
@@ -54,6 +63,10 @@ body {
     text-align: center;
     width: 37.5vw;
     padding: 0;
+    font-family: inherit;
+    font-size: 1em;
+    font-weight: 600;
+    letter-spacing: 0.05em;
 }
 .citation {
     --w: 75vw;
@@ -116,7 +129,7 @@ body {
 }
 .biblio {
     display: inline-block;
-    margin: 0 5vw 1vh 5vw;
+    margin: 0 5vw;
     width: 65vw;
     font-weight: 600;
     letter-spacing: 0.05em;
@@ -129,7 +142,7 @@ span.auteurice {
 }
 .texte {
     text-align: justify;
-    margin: 0 5vw;
+    margin: 1vh 5vw;
     font-style: italic;
     line-height: 1.6;
 }
@@ -152,6 +165,7 @@ span.tag::before {
 }
 span.tag:hover {
     background-color: var(--h);
+    box-shadow: 0 0 3px black;
     transition: 0.3s;
     transform: scale(110%);
 }
@@ -176,10 +190,11 @@ span.tag:hover::before {
 }
 #vide {
     text-align: center;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: 900;
+    font-family: inherit;
+    color: white;
+    font-weight: 600;
     font-size: 1.5em;
-    margin-top: 25vh;
+    margin-top: 20vh;
 }
 #editBiblio {
     text-align: center;
@@ -200,14 +215,13 @@ span.tag:hover::before {
     font-size: 2vw;
     border: none;
     outline: none;
-    overflow-x: hidden;
     resize: none;
+    overflow-x: hidden;
     min-height: 4rem;
     box-sizing: border-box;
     white-space: pre-wrap;
     font-style: italic;
     line-height: 1.6;
-    transition: height 0.15s ease-in-out;
 }
 #validation {
     background-color: var(--b);
@@ -220,8 +234,12 @@ span.tag:hover::before {
 }
 #validation:hover {
     background-color: var(--h);
+    box-shadow: 0 0 5px black;
     transition: 0.3s;
     transform: scale(120%);
+}
+#jsonMenu:hover {
+    background: var(--h);
 }
 .importExport {
     border: none;

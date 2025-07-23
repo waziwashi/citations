@@ -7,7 +7,7 @@ puis 📬 pour en faire un post :
 🔖 ajouter des tags <br>
 🗑️ le supprimer
 
-> dans le mode édition ✏️ :
+> dans le mode édition ✏️ :<br>
 > 💪 Gras<br>
 > ✍️ Italique<br>
 > 📏 Souligner<br>

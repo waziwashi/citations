@@ -7,6 +7,8 @@ puis ✍️ pour en faire un post :
 🔖 pour y ajouter des tags <br>
 🗑️ pour le supprimer
 
+> dans le mode édition ✏️, ctrl+U ou 📏 pour souligner la partie du texte sélectionnée
+
 #### Ensuite, plus qu'à rechercher parmi votre bibliothèque de citations !
 
 📁 Pour 📤 exporter en json ou pour 📥 importer un json déjà existant

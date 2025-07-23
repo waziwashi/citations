@@ -62,7 +62,7 @@
 
             const texte = document.createElement("p");
             texte.className = "texte";
-            texte.textContent = data.texte;
+            texte.innerHTML = data.texte;
 
             const tags = document.createElement("div");
             tags.className = "tags";
@@ -94,6 +94,24 @@
             const allCitations = charger();
             const citation = allCitations[index];
 
+            const soulignerBtn = document.createElement("button");
+            soulignerBtn.textContent = "📏";
+            soulignerBtn.className = "soulignerBtn";
+            soulignerBtn.title = "Souligner le texte sélectionné";
+
+            soulignerBtn.onclick = () => {
+                const start = texteArea.selectionStart;
+                const end = texteArea.selectionEnd;
+                const selected = texteArea.value.substring(start, end);
+                if (!selected) return;
+
+                const before = texteArea.value.substring(0, start);
+                const after = texteArea.value.substring(end);
+                texteArea.value = `${before}<u>${selected}</u>${after}`;
+                texteArea.setSelectionRange(start + 3, end + 3 + 4);
+                ajusterHauteurTextarea(texteArea);
+            };
+
             const ouvrageInput = document.createElement("input");
             ouvrageInput.setAttribute("id", "editBiblio");
             ouvrageInput.value = citation.ouvrage;
@@ -106,6 +124,24 @@
             texteArea.value = citation.texte;
             texteArea.setAttribute("id", "texteArea");
             texteArea.spellcheck = false;
+
+            texteArea.addEventListener("keydown", function (e) {
+                if ((e.ctrlKey || e.metaKey) && e.key === "u") {
+                    e.preventDefault();
+
+                    const start = this.selectionStart;
+                    const end = this.selectionEnd;
+                    const before = this.value.substring(0, start);
+                    const selected = this.value.substring(start, end);
+                    const after = this.value.substring(end);
+
+                    if (selected) {
+                        this.value = before + "<u>" + selected + "</u>" + after;
+                        this.setSelectionRange(start + 3, end + 3 + 4);
+                        ajusterHauteurTextarea(this);
+                    }
+                }
+            });
 
             function ajusterHauteurTextarea(textarea) {
                 textarea.style.height = "auto";
@@ -122,8 +158,10 @@
             topInputs.appendChild(auteuriceInput);
 
             post.innerHTML = "";
+            post.appendChild(soulignerBtn);
             post.appendChild(topInputs);
             post.appendChild(texteArea);
+
 
             const validerBtn = document.createElement("button");
             validerBtn.setAttribute("id", "validation");

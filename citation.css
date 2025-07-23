@@ -224,6 +224,23 @@ span.tag:hover::before {
     font-style: italic;
     line-height: 1.6;
 }
+.texte u {
+    text-decoration: underline;
+}
+.soulignerBtn {
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+    padding: 0.2em 0.3em;
+    background-color: var(--b);
+    border-radius: 0 10px 10px 0;
+}
+.soulignerBtn:hover {
+    background-color: var(--h);
+    transition: 0.3s;
+    transform: translateY(-10%);
+    box-shadow: 0 0 5px black;
+}
 #validation {
     background-color: var(--b);
     border: none;

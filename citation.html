@@ -12,7 +12,7 @@
     <div class="centre">
         <div class="menu">
             <input type="text" class="recherche" oninput="afficherCitations();"
-            ><button onclick="ajouterCitation()">✍️</button><button id="exporterJSON">📁</button>
+            ><button onclick="ajouterCitation()" title="publier la Citation">📬</button><button id="exporterJSON" title="Exporter/Importer JSON">📁</button>
         </div>
         <div class="Ajouter">
             <input type="text" class="livre" placeholder="Titre"
@@ -90,14 +90,51 @@
             const editBtn = document.createElement("button");
             editBtn.setAttribute("id", "editBtn");
             editBtn.textContent = "✏️";
+            editBtn.title = "édition";
             editBtn.onclick = () => {
             const allCitations = charger();
             const citation = allCitations[index];
 
+            const grasBtn = document.createElement("button");
+            grasBtn.textContent = "💪";
+            grasBtn.className = "formatBtn";
+            grasBtn.title = "gras";
+
+            grasBtn.onclick = () => {
+                const start = texteArea.selectionStart;
+                const end = texteArea.selectionEnd;
+                const selected = texteArea.value.substring(start, end);
+                if (!selected) return;
+
+                const before = texteArea.value.substring(0, start);
+                const after = texteArea.value.substring(end);
+                texteArea.value = `${before}<b>${selected}</b>${after}`;
+                texteArea.setSelectionRange(start + 3, end + 3 + 4);
+                ajusterHauteurTextarea(texteArea);
+            };
+            
+            const italiqueBtn = document.createElement("button");
+            italiqueBtn.textContent = "✍️";
+            italiqueBtn.className = "formatBtn";
+            italiqueBtn.title = "italique";
+
+            italiqueBtn.onclick = () => {
+                const start = texteArea.selectionStart;
+                const end = texteArea.selectionEnd;
+                const selected = texteArea.value.substring(start, end);
+                if (!selected) return;
+
+                const before = texteArea.value.substring(0, start);
+                const after = texteArea.value.substring(end);
+                texteArea.value = `${before}<i>${selected}</i>${after}`;
+                texteArea.setSelectionRange(start + 3, end + 3 + 4);
+                ajusterHauteurTextarea(texteArea);
+            };
+
             const soulignerBtn = document.createElement("button");
             soulignerBtn.textContent = "📏";
             soulignerBtn.className = "soulignerBtn";
-            soulignerBtn.title = "Souligner le texte sélectionné";
+            soulignerBtn.title = "souligner";
 
             soulignerBtn.onclick = () => {
                 const start = texteArea.selectionStart;
@@ -125,24 +162,6 @@
             texteArea.setAttribute("id", "texteArea");
             texteArea.spellcheck = false;
 
-            texteArea.addEventListener("keydown", function (e) {
-                if ((e.ctrlKey || e.metaKey) && e.key === "u") {
-                    e.preventDefault();
-
-                    const start = this.selectionStart;
-                    const end = this.selectionEnd;
-                    const before = this.value.substring(0, start);
-                    const selected = this.value.substring(start, end);
-                    const after = this.value.substring(end);
-
-                    if (selected) {
-                        this.value = before + "<u>" + selected + "</u>" + after;
-                        this.setSelectionRange(start + 3, end + 3 + 4);
-                        ajusterHauteurTextarea(this);
-                    }
-                }
-            });
-
             function ajusterHauteurTextarea(textarea) {
                 textarea.style.height = "auto";
                 requestAnimationFrame(() => {
@@ -157,8 +176,15 @@
             topInputs.appendChild(ouvrageInput);
             topInputs.appendChild(auteuriceInput);
 
+            const formatBar = document.createElement("div");
+            formatBar.className = "formatBar";
+
+            formatBar.appendChild(grasBtn);
+            formatBar.appendChild(italiqueBtn);
+            formatBar.appendChild(soulignerBtn);
+
             post.innerHTML = "";
-            post.appendChild(soulignerBtn);
+            post.appendChild(formatBar);
             post.appendChild(topInputs);
             post.appendChild(texteArea);
 
@@ -200,6 +226,7 @@
             const addTagBtn = document.createElement("button");
             addTagBtn.setAttribute("id", "TagBtn");
             addTagBtn.textContent = "🔖";
+            addTagBtn.title = "ajouter un Tag";
             addTagBtn.onclick = () => {
                 const newTag = prompt("Ajouter un tag :")?.trim();
                 if (newTag) {
@@ -218,6 +245,7 @@
             const deleteBtn = document.createElement("button");
             deleteBtn.setAttribute("id", "deleteBtn");
             deleteBtn.textContent = "🗑️";
+            deleteBtn.title = "supprimer";
             deleteBtn.onclick = () => {
                 const citations = charger();
                 citations.splice(index, 1);
@@ -255,7 +283,7 @@
             const filtre = document.querySelector(".recherche").value.toLowerCase().trim();
             let citations = charger();
 
-            citations.forEach(c => {
+            citations.slice().reverse().forEach(c => {
                 const texteComplet = [
                     c.ouvrage,
                     c.auteurice,

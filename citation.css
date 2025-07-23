@@ -1,12 +1,13 @@
 body {
     margin: 0;
     padding: 0;
+    min-height: 95vh;
     background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='100%25' width='100%25'%3E%3Cdefs%3E%3Cpattern id='doodad' width='68' height='68' viewBox='0 0 40 40' patternUnits='userSpaceOnUse' patternTransform='rotate(125)'%3E%3Crect width='100%25' height='100%25' fill='rgba(58, 75, 80,1)'/%3E%3Cpath d='M0 27.5h40v5h-40zM0 7.5h40v5h-40z' fill='rgba(65, 141, 165,1)'/%3E%3Cpath d='M0 27h40v6h-40zM0 7h40v6h-40z' fill='rgba(250, 134, 16,1)'/%3E%3Cpath d='M-14 27.5h20v5h-20zM-34 27.5a 7.5-7.5 0 0 0 7.5-7.5a 12.5-12.5 0 0 1 12.5-12.5v5a-7.5 7.5 0 0 0-7.5 7.5a-12.5 12.5 0 0 1-12.5 12.5M6 27.5a 7.5-7.5 0 0 0 7.5-7.5h5a-12.5 12.5 0 0 1-12.5 12.5M-10 7.5h30v5h-30z' fill='rgba(65, 141, 165,1)'/%3E%3Cpath d='M0 27a 7-7 0 0 0 7-7a 13-13 0 0 1 13-13v6a-7 7 0 0 0-7 7a-13 13 0 0 1-13 13zM20 7h20v6h-20z' fill='rgba(250, 134, 16,1)'/%3E%3Cpath d='M26 7.5a-12.5 12.5 0 0 0-12.5 12.5h5a 7.5-7.5 0 0 1 7.5-7.5h30v-5h-30z' fill='rgba(65, 141, 165,1)'/%3E%3C/pattern%3E%3C/defs%3E%3Crect fill='url(%23doodad)' height='200%25' width='200%25'/%3E%3C/svg%3E ")
 }
 .centre {
     --b: rgba(65, 141, 165,1); /*background*/
     --h: rgba(250, 134, 16,1); /*hover*/
-    background-color: rgba(65, 141, 165, 0.9);
+    background-color: rgba(65, 141, 165, 0.8);
     box-shadow: 1em -1em 10px rgba(0, 0, 0, 0.8);
     margin: 5vh 5vw 0 5vw;
     min-height: 92vh;

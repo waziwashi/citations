@@ -96,7 +96,7 @@
             const citation = allCitations[index];
 
             const grasBtn = document.createElement("button");
-            grasBtn.textContent = "💪";
+            grasBtn.textContent = "B";
             grasBtn.className = "formatBtn";
             grasBtn.title = "gras";
 
@@ -112,27 +112,9 @@
                 texteArea.setSelectionRange(start + 3, end + 3 + 4);
                 ajusterHauteurTextarea(texteArea);
             };
-            
-            const italiqueBtn = document.createElement("button");
-            italiqueBtn.textContent = "✍️";
-            italiqueBtn.className = "formatBtn";
-            italiqueBtn.title = "italique";
-
-            italiqueBtn.onclick = () => {
-                const start = texteArea.selectionStart;
-                const end = texteArea.selectionEnd;
-                const selected = texteArea.value.substring(start, end);
-                if (!selected) return;
-
-                const before = texteArea.value.substring(0, start);
-                const after = texteArea.value.substring(end);
-                texteArea.value = `${before}<i>${selected}</i>${after}`;
-                texteArea.setSelectionRange(start + 3, end + 3 + 4);
-                ajusterHauteurTextarea(texteArea);
-            };
 
             const soulignerBtn = document.createElement("button");
-            soulignerBtn.textContent = "📏";
+            soulignerBtn.textContent = "U";
             soulignerBtn.className = "soulignerBtn";
             soulignerBtn.title = "souligner";
 
@@ -180,7 +162,6 @@
             formatBar.className = "formatBar";
 
             formatBar.appendChild(grasBtn);
-            formatBar.appendChild(italiqueBtn);
             formatBar.appendChild(soulignerBtn);
 
             post.innerHTML = "";

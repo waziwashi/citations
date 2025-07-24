@@ -232,11 +232,16 @@ span.tag:hover::before {
     border: none;
     cursor: pointer;
     font-size: 1.2em;
-    padding: 0.2em 0.3em;
+    padding: 0.2em 0.5em;
     background-color: var(--b);
+}
+.formatBtn {
+    font-weight: 900;
 }
 .soulignerBtn {
     border-radius: 0 10px 10px 0;
+    text-decoration: underline;
+    font-weight: 500;
 }
 .formatBar button:hover {
     background-color: var(--h);

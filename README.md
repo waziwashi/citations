@@ -8,9 +8,8 @@ puis 📬 pour en faire un post :
 🗑️ le supprimer
 
 > dans le mode édition ✏️ :<br>
-> 💪 Gras<br>
-> ✍️ Italique<br>
-> 📏 Souligner<br>
+> <b>B</b> Gras<br>
+> <u>U</u> Souligner<br>
 
 #### Ensuite, plus qu'à rechercher parmi votre bibliothèque de citations !
 
